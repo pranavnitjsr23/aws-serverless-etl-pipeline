@@ -137,7 +137,9 @@ sample_data/sample.json
 
 The original dataset used during development was much larger and was stored in Amazon S3 rather than GitHub.
 
-Repository Structure
+## Repository Structure
+
+```text
 aws-serverless-etl-pipeline/
 │
 ├── lambda/
@@ -150,25 +152,28 @@ aws-serverless-etl-pipeline/
 │   └── sample.json
 │
 └── README.md
-Key Concepts Learned
+```
+
+## Key Concepts Learned
 
 This project demonstrates practical experience with:
 
-Serverless ETL
-Event-driven pipelines
-AWS S3
-AWS Lambda
-AWS Glue
-PySpark
-JSON processing
-Data cleaning
-Deduplication
-Parquet
-Data partitioning
-Glue Data Catalog
-Glue Crawlers
-Amazon Athena
-SQL analytics
-IAM permissions
-Passing parameters between AWS services
+- Serverless ETL
+- Event-driven pipelines
+- Amazon S3
+- AWS Lambda
+- AWS Glue
+- PySpark
+- JSON processing
+- Data cleaning
+- Deduplication
+- Parquet
+- Data partitioning
+- Glue Data Catalog
+- Glue Crawlers
+- Amazon Athena
+- SQL analytics
+- IAM permissions
+- Passing parameters between AWS services
+
 
