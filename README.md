@@ -2,7 +2,7 @@
 
 A serverless data engineering pipeline that processes raw e-commerce event data using AWS S3, Lambda, Glue, PySpark, and Athena.
 
-## 1. Architecture
+## Architecture
 
 S3 (Raw Data)
         │
@@ -75,22 +75,28 @@ to_timestamp(
     col("event_time"),
     "yyyy-MM-dd HH:mm:ss 'UTC'"
 )
+```
 
-2. Null handling
+### 2. Null handling
 
-Missing brand values are replaced with "Unknown".
+Missing `brand` values are replaced with `"Unknown"`.
 
-when(col("brand").isNull(), "Unknown")
-.otherwise(col("brand"))
-3. Deduplication
+```python
+when(col("brand").isNull(), "Unknown") \
+    .otherwise(col("brand"))
+```
+
+### 3. Deduplication
 
 Duplicate events are removed using a composite key consisting of:
 
-event_time
-event_type
-product_id
-user_id
-user_session
+- `event_time`
+- `event_type`
+- `product_id`
+- `user_id`
+- `user_session`
+
+```python
 df.dropDuplicates([
     "event_time",
     "event_type",
@@ -98,46 +104,31 @@ df.dropDuplicates([
     "user_id",
     "user_session"
 ])
-4. Processing timestamp
+```
 
-A processed_at column records when the data was processed.
+### 4. Processing timestamp
 
+A `processed_at` column records when the data was processed.
+
+```python
 current_timestamp()
-5. Partitioning
+```
+
+### 5. Partitioning
 
 The event timestamp is used to create year and month partitions.
 
+```text
 year=2020/
     month=1/
     month=2/
+```
 
 Partitioning allows Athena to scan only relevant partitions when filtering by date.
 
-6. Format conversion
+### 6. Format conversion
 
 Raw JSON is converted into Parquet for more efficient analytical querying.
-
-Example Athena Queries
-Count events by event type
-SELECT
-    event_type,
-    COUNT(*) AS event_count
-FROM output
-GROUP BY event_type
-ORDER BY event_count DESC;
-Filter by partition
-SELECT COUNT(*)
-FROM output
-WHERE year = '2020'
-  AND month = '2';
-Product activity
-SELECT
-    product_id,
-    COUNT(*) AS events
-FROM output
-GROUP BY product_id
-ORDER BY events DESC
-LIMIT 10;
 Sample Input
 
 A small sample dataset is included in:
